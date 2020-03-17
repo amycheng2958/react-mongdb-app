@@ -7,6 +7,24 @@ const initState = {
     user: "",
     type: ""
 };
+function loginSuccess(data) {
+    return {
+        type: "LOGIN_SUCESS",
+        payload: data
+    };
+}
+function registerSuccess(data) {
+    return {
+        type: "REGISTER_SUCESS",
+        payload: data
+    };
+}
+function errorMsg(msg) {
+    return { msg, type: "ERROR_MSG" };
+}
+export function loadData(userinfo) {
+	return { type: "LOAD_DATA", payload: userinfo };
+}
 export function handleLogin(value) {
     return dispatch => {
         axios.post("/user/login", value).then(res => {
@@ -29,21 +47,7 @@ export function handleRegister(value) {
         });
     };
 }
-function loginSuccess(data) {
-    return {
-        type: "LOGIN_SUCESS",
-        payload: data
-    };
-}
-function registerSuccess(data) {
-    return {
-        type: "REGISTER_SUCESS",
-        payload: data
-    };
-}
-function errorMsg(msg) {
-    return { msg, type: "ERROR_MSG" };
-}
+
 export function user(state = initState, action) {
     switch (action.type) {
         case "LOGIN_SUCESS":
@@ -63,7 +67,9 @@ export function user(state = initState, action) {
                 redirectTo: getRedirectPath(action.payload)
             };
         case "ERROR_MSG":
-            return { ...state, isAuth: false, msg: action.msg };
+			return { ...state, isAuth: false, msg: action.msg };
+		case "LOAD_DATA":
+            return { ...state, ...action.payload };
         default:
             return state;
     }

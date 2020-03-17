@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import { createForm } from "rc-form";
-import {
-    List,
-    InputItem,
-    Radio,
-    WingBlank,
-    WhiteSpace,
-    Button
-} from "antd-mobile";
+import { List, InputItem, Radio, WingBlank, WhiteSpace, Button } from "antd-mobile";
 import { connect } from "react-redux";
 
 import { Redirect } from "react-router-dom";
@@ -31,21 +24,23 @@ class Register extends Component {
         const { validateFields } = this.props.form;
         const { handleRegister } = this.props;
         validateFields((error, value) => {
+            console.log(122, value);
+
             if (!error) {
                 handleRegister(value);
             }
         });
     };
     render() {
-        const { getFieldDecorator, getFieldError } = this.props.form;
+		const { getFieldDecorator, getFieldError } = this.props.form;
+		console.log(333,this.props.form);
+		
         const { type } = this.state;
         console.log(this.props);
 
         return (
             <div>
-                {this.props.redirectTo ? (
-                    <Redirect to={this.props.redirectTo} />
-                ) : null}
+                {this.props.redirectTo ? <Redirect to={this.props.redirectTo} /> : null}
                 <WingBlank>
                     <List>
                         {getFieldDecorator("user", { rules: [nameRules] })(
@@ -61,11 +56,7 @@ class Register extends Component {
                         {getFieldDecorator("pwd", {
                             rules: [passwordRules]
                         })(
-                            <InputItem
-                                type="password"
-                                placeholder="******"
-                                clear
-                            >
+                            <InputItem type="password" placeholder="******" clear>
                                 密码
                             </InputItem>
                         )}
@@ -76,31 +67,22 @@ class Register extends Component {
                         {getFieldDecorator("confpwd", {
                             rules: [passwordRules]
                         })(
-                            <InputItem
-                                type="password"
-                                placeholder="******"
-                                clear
-                            >
+                            <InputItem type="password" placeholder="******" clear>
                                 确认密码
                             </InputItem>
                         )}
                         {getFieldError("confpwd") && (
-                            <p className="error-msg">
-                                {getFieldError("confpwd")}
-                            </p>
+                            <p className="error-msg">{getFieldError("confpwd")}</p>
                         )}
-                        <RadioItem
-                            checked={type === "genius"}
-                            onChange={() => this.setState({ type: "genius" })}
-                        >
-                            牛人
-                        </RadioItem>
-                        <RadioItem
+                        {/* {getFieldDecorator("type")(<RadioItem value="genius">牛人</RadioItem>)}
+                        {getFieldDecorator("type")(<RadioItem value="boss">BOSS</RadioItem>)} */}
+
+                        {/* <RadioItem
                             checked={type === "boss"}
                             onChange={() => this.setState({ type: "boss" })}
                         >
                             BOSS
-                        </RadioItem>
+                        </RadioItem> */}
                         <Button onClick={this.submit} type="primary">
                             确定
                         </Button>
